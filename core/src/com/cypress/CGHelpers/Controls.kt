@@ -1,6 +1,7 @@
 package com.cypress.CGHelpers
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -161,6 +162,9 @@ public class Controls(private val game : CGGame, private val player : Player, pr
 
         health.setPosition(263f, 414f)
         ammo.setPosition(85f, 350f)
+        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) prevGun()
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) nextGun()
+
 
         stage.actors[9]  = health
         stage.actors[10] = ammo

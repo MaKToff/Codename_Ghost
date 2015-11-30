@@ -1,5 +1,7 @@
 package com.cypress.GameObjects
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -99,6 +101,53 @@ public class Player(public override val position : Vector2, protected override v
             shouldJump = false
             onGround   = false
         }
+
+        //if player reach right side
+        if (position.x > mapLength) position.x = mapLength
+
+        // if player reach left side
+        if (position.x < 2f) position.x = 2f
+
+        delta = position.y - oldY
+        bounds.setPosition(position.x, position.y)
+    }
+    fun inputUpdate() {
+        val oldY = position.y
+
+        if (position.y <= 80f) {
+            onGround = true
+            position.y = 80f
+            velocity.y = 12f
+            acceleration.y = 0.2f
+        } else {
+            if (velocity.y < -9) velocity.y = -9f
+            position.y += velocity.y
+            velocity.y -= acceleration.y
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            position.x += velocity.x
+            shouldGoToRight = true
+        }else shouldGoToRight = false
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            position.x -= velocity.x
+            shouldGoToLeft = true
+        }else shouldGoToLeft = false
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&& onGround ) {
+            // need to change because of collision
+            velocity.y = 12f
+            position.y += 60f
+            shouldJump = false
+            onGround = false
+        }
+/*
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+        {
+            shouldShoot = true
+        }else shouldShoot = false*/
+
 
         //if player reach right side
         if (position.x > mapLength) position.x = mapLength

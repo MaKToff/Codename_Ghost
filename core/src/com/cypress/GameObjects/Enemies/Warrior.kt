@@ -67,13 +67,13 @@ class Warrior(public override val position : Vector2, private val player : Playe
 
         // movement of warrior
         if (position.y <= 80f) {
-            onGround   = true
+            onGround = true
             position.y = 80f
             velocity.y = 12f
         }
         // falling
         else {
-            if(velocity.y < -9) velocity.y = -9f
+            if (velocity.y < -9) velocity.y = -9f
             position.y += velocity.y
             velocity.y -= 0.2f
         }
@@ -82,11 +82,10 @@ class Warrior(public override val position : Vector2, private val player : Playe
         if (counter % 50 == 0) {
             canShoot = true
             counter = 0
-        }
-        else canShoot = false
+        } else canShoot = false
 
         // warrior pursues player
-        if (stayRight && distance > 0 && distance < 300f) {
+        if (stayRight && distance > 0 && distance < 300f && Math.abs(player.getY() - position.y) < 500) {
             shouldGoToRight = false
             shouldGoToLeft = false
             if (canShoot) {
@@ -94,13 +93,11 @@ class Warrior(public override val position : Vector2, private val player : Playe
                 assets.shot[0]?.stop()
                 if (assets.musicOn) assets.shot[0]?.play()
             }
-        }
-        else if (stayRight && distance >= 300f && distance < 500f) {
+        } else if (stayRight && distance >= 300f && distance < 500f) {
             position.x += velocity.x
             shouldGoToRight = true
             shouldGoToLeft = false
-        }
-        else if (!stayRight && distance < 0 && distance > -300f) {
+        } else if (!stayRight && distance < 0 && distance > -300f && Math.abs(player.getY() - position.y) < 500) {
             shouldGoToRight = false
             shouldGoToLeft = false
             if (canShoot) {
@@ -108,13 +105,11 @@ class Warrior(public override val position : Vector2, private val player : Playe
                 assets.shot[0]?.stop()
                 if (assets.musicOn) assets.shot[0]?.play()
             }
-        }
-        else if (!stayRight && distance <= -300f && distance > -500f) {
+        } else if (!stayRight && distance <= -300f && distance > -500f) {
             position.x -= velocity.x
             shouldGoToRight = false
             shouldGoToLeft = true
-        }
-        else if (distance == 0f) stayRight = !stayRight
+        } else if (distance == 0f) stayRight = !stayRight
 
         // warrior can't find player and looks around
         else {
