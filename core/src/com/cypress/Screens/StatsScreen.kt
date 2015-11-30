@@ -1,6 +1,7 @@
 package com.cypress.Screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -99,6 +100,14 @@ public class StatsScreen(private val game : CGGame, private val data : Array<Int
 
         // playing music
         if (!(assets.activeMusic?.isPlaying ?: false) && assets.musicOn) assets.activeMusic?.play()
+
+        // keyboard control
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if ((assets.activeMusic?.isPlaying ?: false)) assets.activeMusic?.stop()
+            assets.activeMusic = assets.mainTheme
+            game.screen = LevelsScreen(game)
+            dispose()
+        }
 
         // drawing stage
         stage.act(delta)

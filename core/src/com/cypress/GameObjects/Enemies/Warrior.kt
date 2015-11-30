@@ -78,14 +78,15 @@ class Warrior(public override val position : Vector2, private val player : Playe
             velocity.y -= 0.2f
         }
 
-        val distance = player.getX() - position.x
+        val distanceX = player.getX() - position.x
+        val distanceY = Math.abs(player.getY() - position.y)
         if (counter % 50 == 0) {
             canShoot = true
             counter = 0
         } else canShoot = false
 
         // warrior pursues player
-        if (stayRight && distance > 0 && distance < 300f && Math.abs(player.getY() - position.y) < 500) {
+        if (stayRight && distanceX > 0 && distanceX < 300f && distanceY < 500) {
             shouldGoToRight = false
             shouldGoToLeft = false
             if (canShoot) {
@@ -93,11 +94,13 @@ class Warrior(public override val position : Vector2, private val player : Playe
                 assets.shot[0]?.stop()
                 if (assets.musicOn) assets.shot[0]?.play()
             }
-        } else if (stayRight && distance >= 300f && distance < 500f) {
+        }
+        else if (stayRight && distanceX >= 300f && distanceX < 500f) {
             position.x += velocity.x
             shouldGoToRight = true
             shouldGoToLeft = false
-        } else if (!stayRight && distance < 0 && distance > -300f && Math.abs(player.getY() - position.y) < 500) {
+        }
+        else if (!stayRight && distanceX < 0 && distanceX > -300f && distanceY < 500) {
             shouldGoToRight = false
             shouldGoToLeft = false
             if (canShoot) {
@@ -105,11 +108,13 @@ class Warrior(public override val position : Vector2, private val player : Playe
                 assets.shot[0]?.stop()
                 if (assets.musicOn) assets.shot[0]?.play()
             }
-        } else if (!stayRight && distance <= -300f && distance > -500f) {
+        }
+        else if (!stayRight && distanceX <= -300f && distanceX > -500f) {
             position.x -= velocity.x
             shouldGoToRight = false
             shouldGoToLeft = true
-        } else if (distance == 0f) stayRight = !stayRight
+        }
+        else if (distanceX == 0f) stayRight = !stayRight
 
         // warrior can't find player and looks around
         else {

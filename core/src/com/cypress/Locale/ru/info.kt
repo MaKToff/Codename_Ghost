@@ -3,7 +3,7 @@ package com.cypress.Locale.ru
 /** Returns string with info on Russian. */
 public fun info() : String {
     val text =
-            "                                       Версия 0.2.7\n" +
+            "                                   Версия 0.3.0 билд 65\n" +
             "\n" +
             "Игра создана командой Cypress:\n" +
             "Михаил Кита\n" +

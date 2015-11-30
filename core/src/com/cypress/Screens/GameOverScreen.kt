@@ -1,6 +1,7 @@
 package com.cypress.Screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -98,6 +99,20 @@ public class GameOverScreen(private val game : CGGame) : Screen {
 
         // playing music
         if (!(assets.activeMusic?.isPlaying ?: false) && assets.musicOn) assets.activeMusic?.play()
+
+        // keyboard control
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            assets.activeMusic?.stop()
+            game.screen = MainScreen(game)
+            dispose()
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if ((assets.activeMusic?.isPlaying ?: false) && assets.musicOn) assets.activeMusic?.stop()
+            assets.loadLevel1()
+            val player  = Player(Vector2(20f, 1500f), 120, 177, 6196f)
+            game.screen = Level1(game, player)
+            dispose()
+        }
 
         // drawing stage
         stage.act(delta)

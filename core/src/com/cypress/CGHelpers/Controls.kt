@@ -20,7 +20,9 @@ public class Controls(private val game : CGGame, private val player : Player, pr
     private val stage      = Stage()
     private val labelStyle = Label.LabelStyle()
 
-    private var index = assets.gunNames.indexOf(player.gunType)
+    private var index        = assets.gunNames.indexOf(player.gunType)
+    private var leftPressed  = false
+    private var rightPressed = false
 
     init {
         // initializing buttons
@@ -48,22 +50,26 @@ public class Controls(private val game : CGGame, private val player : Player, pr
         left.addListener(object : ClickListener() {
             override fun touchDown(event : InputEvent?, x : Float, y : Float, ptr : Int, button : Int) : Boolean {
                 player.shouldGoToLeft = true
+                leftPressed = true
                 return true
             }
 
             override fun touchUp(event : InputEvent?, x : Float, y : Float, ptr : Int, button : Int) {
                 player.shouldGoToLeft = false
+                leftPressed = false
             }
         })
 
         right.addListener(object : ClickListener() {
             override fun touchDown(event : InputEvent?, x : Float, y : Float, ptr : Int, button : Int) : Boolean {
                 player.shouldGoToRight = true
+                rightPressed = true
                 return true
             }
 
             override fun touchUp(event : InputEvent?, x : Float, y : Float, ptr : Int, button : Int) {
                 player.shouldGoToRight = false
+                rightPressed = false
             }
         })
 
@@ -162,13 +168,26 @@ public class Controls(private val game : CGGame, private val player : Player, pr
 
         health.setPosition(263f, 414f)
         ammo.setPosition(85f, 350f)
-        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) prevGun()
-        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) nextGun()
-
 
         stage.actors[9]  = health
         stage.actors[10] = ammo
         setIcon()
+
+        // keyboard control
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) player.shouldGoToLeft = true
+        else if (!leftPressed) player.shouldGoToLeft = false
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) player.shouldGoToRight = true
+        else if (!rightPressed) player.shouldGoToRight = false
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W) && player.onGround ) {
+            player.shouldJump = true
+            player.onGround   = false
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) shoot()
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) game.screen = MenuScreen(game, level)
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT_BRACKET)) prevGun()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT_BRACKET)) nextGun()
     }
 
     /** Shoots from gun. */

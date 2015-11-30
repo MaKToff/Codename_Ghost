@@ -1,6 +1,7 @@
 package com.cypress.Screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -49,15 +50,14 @@ public class LevelsScreen(private val game : CGGame) : Screen {
             }
         })
 
-        if (game.availableLevels[2]) {
-            level[2].addListener(object : ClickListener() {
-                override fun touchDown(event: InputEvent?, x: Float, y: Float, ptr: Int, button: Int) = true
+        level[7].addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, ptr: Int, button: Int) = true
 
-                override fun touchUp(event: InputEvent?, x: Float, y: Float, ptr: Int, button: Int) {
-                    assets.godMode = true
-                }
-            })
-        }
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, ptr: Int, button: Int) {
+                if (!assets.godMode) assets.godMode = true
+                else assets.godMode = false
+            }
+        })
 
         back.addListener(object : ClickListener() {
             override fun touchDown(event : InputEvent?, x : Float, y : Float, ptr : Int, button : Int) = true
@@ -93,6 +93,12 @@ public class LevelsScreen(private val game : CGGame) : Screen {
 
         // playing main theme
         if (!(assets.activeMusic?.isPlaying ?: false) && assets.musicOn) assets.activeMusic?.play()
+
+        // keyboard control
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            game.screen = MainScreen(game)
+            dispose()
+        }
 
         // drawing stage
         stage.act(delta)

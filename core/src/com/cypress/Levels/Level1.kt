@@ -146,14 +146,10 @@ public class Level1(private val game : CGGame, private val player : Player) : Sc
 
         // player should shoot
         index = assets.gunNames.indexOf(player.gunType)
-        if ((player.shouldShoot||Gdx.input.isKeyPressed(Input.Keys.SPACE)) &&
-                counter % assets.rateOfFire[index] == 0 && index != 6) {
+        if ((player.shouldShoot || Gdx.input.isKeyPressed(Input.Keys.ENTER))
+                && counter % assets.rateOfFire[index] == 0 && index != 6) {
             controls.shoot()
             counter = 0
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-        {
-            controls.shoot()
         }
 
         // player has a key
@@ -281,7 +277,7 @@ public class Level1(private val game : CGGame, private val player : Player) : Sc
 
         // drawing player
         if (player.lives >= 0) {
-            player.inputUpdate()
+            player.update()
             player.checkCollision(blockList)
             player.draw(runTime, batcher)
         }

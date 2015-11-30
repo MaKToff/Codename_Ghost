@@ -1,6 +1,7 @@
 package com.cypress.Screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -127,6 +128,12 @@ public class MenuScreen(private val game : CGGame, private val level : Screen?) 
 
         // playing music
         if (!(assets.activeMusic?.isPlaying ?: false) && assets.musicOn) assets.activeMusic?.play()
+
+        // keyboard control
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            level?.resume()
+            dispose()
+        }
 
         // drawing stage
         stage.act(delta)
